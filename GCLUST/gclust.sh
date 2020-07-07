@@ -4,12 +4,15 @@
 # This bash script will do the entire GCLUST pipeline in one go but this is specific to grabbing where specific files are located for the UK Biobank dataset. If we want to run it on another dataset, it needs to be modified to look for the relevant files for another dataset.
 #
 
+codedir=/home/ml437/code
+cd $codedir
+
 # load relevant modules for doing stuff with Freesurfer and MATLAB
 module load freesurfer/6.0.0
 module load matlab/r2019b
 
 # this was in gclust.csh but not sure if I need it.
-source $FREESURFER_HOME/SetUpFreeSurfer.sh # edit as necessary
+# source $FREESURFER_HOME/SetUpFreeSurfer.sh # edit as necessary
 
 # directory where fsaverage is located
 fsavgdir=$FREESURFER_HOME/subjects/fsaverage
@@ -28,7 +31,9 @@ rootoutdir=/home/ml437/rds/hpc-work/ukbiobank
 #mkdir $datadir
 
 # get a list of subjects to loop over
-sublist=`ls -d $rootdir/UKB10000*`
+cd $rootdir
+sublist=`ls -d UKB10000*`
+cd $codedir
 
 # set some variables
 nsmooth=705
@@ -48,7 +53,8 @@ do
     mkdir $rootoutdir/$sub
     suboutdir=$rootoutdir/$sub/GCLUST    
     mkdir $suboutdir
-
+    ln -s $fsavgdir $suboutdir
+    cd $suboutdir
 
     # left hemisphere ---------------------------------------------------------
     hemi="lh"
@@ -93,6 +99,7 @@ do
 
 done
 
+cd $codedir
 
 # # extract weighted averages for area and thickness for each cluster
 # set cmd = "gclust('"$datadir"','"$roidir"','"$matlabdir"','"$outdir"')"
