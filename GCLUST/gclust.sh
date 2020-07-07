@@ -14,6 +14,7 @@ module load matlab/r2019b
 # this was in gclust.csh but not sure if I need it.
 # source $FREESURFER_HOME/SetUpFreeSurfer.sh # edit as necessary
 
+
 # directory where fsaverage is located
 fsavgdir=$FREESURFER_HOME/subjects/fsaverage
 
@@ -27,8 +28,10 @@ roidir=$gclustdir/GCLUST/clusters
 
 # set the output directory where data will be stored after all this is finished running
 rootoutdir=/home/ml437/rds/hpc-work/ukbiobank
+export SUBJECTS_DIR=$rootoutdir
 #datadir=$rootoutdir/surfdata
 #mkdir $datadir
+mkdir $rootoutdir/GCLUST
 
 # get a list of subjects to loop over
 cd $rootdir
@@ -49,12 +52,16 @@ do
     # print progress to screen
     echo Working on $sub
 
-    # make a subject directory in rootoutdir
-    mkdir $rootoutdir/$sub
-    suboutdir=$rootoutdir/$sub/GCLUST    
+    # make a symbolic link from $rootdir/$sub in $rootoutdir
+    ln -s $rootdir/$sub $rootoutdir
+    
+    # make a GCLUST directory in $rootoutdir to place results into
+    #mkdir $rootoutdir/$sub
+    # make subject specific directory in GCLUST output directory
+    suboutdir=$rootoutdir/GCLUST/$sub
     mkdir $suboutdir
-    ln -s $fsavgdir $suboutdir
-    cd $suboutdir
+    ln -s $fsavgdir $rootoutdir
+    cd $rootoutdir
 
     # left hemisphere ---------------------------------------------------------
     hemi="lh"
@@ -64,14 +71,14 @@ do
 
     # resample thickness to common space and concatenate 
     out=$suboutdir/${hemi}.${meas}
-    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --meas $meas
+    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --meas $meas --s $sub
 
     # smooth thickness
-    mri_surf2surf --s $target --sval ${out}.mgh --cortex --nsmooth-out $nsmooth --tval ${out}.n${nsmooth}.mgh --hemi $hemi
+    mri_surf2surf --s $target --sval ${out}.mgh --cortex --nsmooth-out $nsmooth --tval ${out}.n${nsmooth}.mgh --hemi $hemi 
 
     # resample surface area to common space and concatenate 
     out=$suboutdir/${hemi}.${area}
-    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --area $area
+    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --area $area --s $sub
 
     # smooth surface
     mri_surf2surf --s $target --sval ${out}.mgh --cortex --nsmooth-out $nsmooth --tval ${out}.n${nsmooth}.mgh --hemi $hemi
@@ -81,18 +88,18 @@ do
     hemi="rh"
 
     # set subject's *sphere.reg file
-    subj_filename=$rootdir/$sub/surfaces/$sub/surf/${hemi}.sphere.reg
+    subj_filename=$rootoutdir/$sub/surfaces/$sub/surf/${hemi}.sphere.reg
 
     # resample thickness to common space and concatenate 
     out=$suboutdir/${hemi}.${meas}
-    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --meas $meas
+    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --meas $meas --s $sub
 
     # smooth thickness
     mri_surf2surf --s $target --sval ${out}.mgh --cortex --nsmooth-out $nsmooth --tval ${out}.n${nsmooth}.mgh --hemi $hemi
 
     # resample surface area to common space and concatenate 
     out=$suboutdir/${hemi}.${area}
-    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --area $area
+    mris_preproc --out ${out}.mgh --target $target --f $subj_filename --hemi $hemi --area $area --s $sub
 
     # smooth surface
     mri_surf2surf --s $target --sval ${out}.mgh --cortex --nsmooth-out $nsmooth --tval ${out}.n${nsmooth}.mgh --hemi $hemi
