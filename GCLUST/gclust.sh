@@ -19,11 +19,11 @@ rootdir=/rds/project/rb643/rds-rb643-ukbiobank2/Data_Imaging
 
 # get a list of subjects to loop over
 cd $rootdir
-sublist=`ls -d UKB10000* UKB10001*`
+sublist=`ls -d UKB100*`
 cd $codedir
 
 # set the output directory where data will be stored after all this is finished running
-rootoutdir=/rds/user/ml437/hpc-work/ukbiobank/GCLUST2
+rootoutdir=/rds/user/ml437/hpc-work/ukbiobank/GCLUST
 export SUBJECTS_DIR=$rootoutdir
 mkdir $rootoutdir
 outdir=$rootoutdir
