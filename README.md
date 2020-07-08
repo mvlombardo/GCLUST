@@ -3,6 +3,7 @@
 *July 8, 2020*
 
 **Written by Chi-Hua Chen and Donald Hagler**
+
 **Adapted by Michael Lombardo**
 
 Use this protocol for the analysis of mean cortical thickness and surface area
