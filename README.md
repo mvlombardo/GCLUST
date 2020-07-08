@@ -48,6 +48,6 @@ thickness were used, please cite the following papers.
 	Fennema-Notestine C, Jak AJ, Neale MC, Franz CE, Lyons MJ, Grant MD, Fischl
 	B, Seidman LJ, Tsuang MT, Kremen WS, Dale AM. Science. 2012
 *	[Genetic topography of brain morphology.](https://www.ncbi.nlm.nih.gov/pubmed/24082094)
-	Chen CH, Fiecas M, Guti�rrez ED, Panizzon MS, Eyler LT, Vuoksimaa E,
+	Chen CH, Fiecas M, Gutierrez ED, Panizzon MS, Eyler LT, Vuoksimaa E,
 	Thompson WK, Fennema-Notestine C, Hagler DJ Jr, Jernigan TL, Neale MC,
 	Franz CE, Lyons MJ, Fischl B, Tsuang MT, Dale AM, Kremen WS. PNAS. 2013
